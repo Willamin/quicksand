@@ -17,7 +17,7 @@ server = HTTP::Server.new([
   HTTP::ErrorHandler.new,
   HTTP::LogHandler.new,
   HTTP::CompressHandler.new,
-  Quicksand::SandHandler.new(c.filename),
+  Quicksand::SandHandler.new(c.filename, c.max_downloads),
 ])
 
 print "spinning up ngrok..."
