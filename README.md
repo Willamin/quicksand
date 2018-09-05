@@ -1,5 +1,16 @@
 # quicksand
 
+## Usage
+
+I symlink the `quicksand` binary to someplace in my `PATH` as `sand`. In this document, any time I use the command `sand`, that is what I'll be referring to.
+
+```sh-session
+$ sand hello.txt
+starting...
+listening at http://127.0.0.1:7000
+http: http://xxxx0000.ngrok.io
+```
+
 ## Contributing
 
 1. Fork it ( https://github.com/willamin/quicksand/fork )
