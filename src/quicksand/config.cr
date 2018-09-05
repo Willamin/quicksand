@@ -1,34 +1,24 @@
-struct Quicksand::Config
-  property filename : String?
-  property host : String = ENV["SANDHOST"]? || ENV["HOST"]? || "127.0.0.1"
-  property port : Int32 = ENV["SANDPORT"]?.try(&.to_i) || ENV["PORT"]?.try(&.to_i) || 7000
-
-  def verify!
-    raise "Must provide a filename" if filename.nil?
-    raise "#{filename} does not exist" unless File.exists?(filename.not_nil!)
+macro arg(num, err_message, default)
+  begin
+    ARGV[{{num}}]
   rescue e
-    puts e.message
-    exit 1
+    raise {{err_message}}
+  ensure
+    {{default}}
   end
+end
 
-  def self.from_cli
-    c = Config.new
-    c.filename = ARGV[0]?
-    Frozen.new(c)
-  end
+struct Quicksand::Config
+  property filename : String
+  property host : String
+  property port : Int32
 
-  struct Frozen
-    getter filename : String
-    getter host : String
-    getter port : Int32
+  def initialize
+    @filename = arg(0, "Must provide a filename", "")
 
-    def initialize(@filename, @host, @port); end
+    raise "#{filename} does not exist" unless File.exists?(filename.not_nil!)
 
-    def initialize(c : Config)
-      c.verify!
-      @filename = c.filename.not_nil!
-      @host = c.host
-      @port = c.port
-    end
+    @host = ENV["SANDHOST"]? || ENV["HOST"]? || "127.0.0.1"
+    @port = ENV["SANDPORT"]?.try(&.to_i) || ENV["PORT"]?.try(&.to_i) || 7000
   end
 end

@@ -6,7 +6,12 @@ module Quicksand
   VERSION = {{ `shards version #{__DIR__}`.chomp.stringify }}
 end
 
-c = Quicksand::Config.from_cli
+begin
+  c = Quicksand::Config.new
+rescue e
+  STDERR.puts e.message
+  exit 1
+end
 
 server = HTTP::Server.new([
   HTTP::ErrorHandler.new,
