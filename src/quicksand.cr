@@ -15,11 +15,19 @@ server = HTTP::Server.new([
   Quicksand::SandHandler.new(c.filename),
 ])
 
-puts "starting..."
+print "spinning up ngrok..."
+
 Ngrok.start({addr: "#{c.host}:#{c.port}"}) do |ngrok|
+  puts "done"
+
+  print "spinning up static server"
   server.bind_tcp(c.host, c.port)
-  puts "listening at http://#{c.host}:#{c.port}"
-  puts "http:        #{ngrok.ngrok_url}"
-  puts "https:       #{ngrok.ngrok_url_https}"
+  puts "done"
+
+  puts
+
+  puts "local        : http://#{c.host}:#{c.port}/#{c.filename}"
+  puts "remote http  : #{ngrok.ngrok_url}/#{c.filename}"
+  puts "remote https : #{ngrok.ngrok_url_https}/#{c.filename}"
   server.listen
 end
