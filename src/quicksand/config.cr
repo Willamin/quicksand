@@ -9,7 +9,7 @@ macro arg(num, err_message, default)
 end
 
 macro env_int(name)
-  ENV[{{name}}]?.try(&.to_i)
+  ENV[{{name}}]?.try(&.to_i?)
 end
 
 struct Quicksand::Config

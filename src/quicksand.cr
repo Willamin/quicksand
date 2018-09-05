@@ -29,6 +29,8 @@ Ngrok.start({addr: "#{c.host}:#{c.port}"}) do |ngrok|
   puts "done"
   puts
 
+  puts "limiting to #{c.max_downloads} downloads"
+
   puts "local        : http://#{c.host}:#{c.port}/#{c.filename}"
   puts "remote http  : #{ngrok.ngrok_url}/#{c.filename}"
   puts "remote https : #{ngrok.ngrok_url_https}/#{c.filename}"

@@ -11,6 +11,8 @@ listening at http://127.0.0.1:7000
 http: http://xxxx0000.ngrok.io
 ```
 
+By default, only 1 download is allowed, as the primary purpose of this program is to send 1 file 1 time. However, this number can be changed by setting the `SAND_MAX` environment variable. Anything that is 0 or less is considered to mean "no limit". Anything that isn't an integer is ignored.
+
 ## Contributing
 
 1. Fork it ( https://github.com/willamin/quicksand/fork )
