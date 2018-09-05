@@ -25,6 +25,6 @@ struct Quicksand::Config
 
     @host = ENV["SANDHOST"]? || ENV["HOST"]? || "127.0.0.1"
     @port = env_int("SANDPORT") || env_int("PORT") || 7000
-    @max_downloads = env_int("SAND_MAX") || 0
+    @max_downloads = env_int("SAND_MAX") || 1
   end
 end
