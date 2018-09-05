@@ -4,3 +4,7 @@ shards:
     github: ragmaanir/microtest
     commit: 46199a9b32be12021b9018a7e7e068572b842c69
 
+  ngrok:
+    github: watzon/ngrok.cr
+    commit: 3627a6788644313d0138e08dddb54413f97588e1
+
