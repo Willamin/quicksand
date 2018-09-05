@@ -21,18 +21,18 @@ server = HTTP::Server.new([
 ])
 
 print "spinning up ngrok..."
-
 Ngrok.start({addr: "#{c.host}:#{c.port}"}) do |ngrok|
   puts "done"
 
-  print "spinning up static server"
+  print "spinning up static server..."
   server.bind_tcp(c.host, c.port)
   puts "done"
-
   puts
 
   puts "local        : http://#{c.host}:#{c.port}/#{c.filename}"
   puts "remote http  : #{ngrok.ngrok_url}/#{c.filename}"
   puts "remote https : #{ngrok.ngrok_url_https}/#{c.filename}"
+  puts
+
   server.listen
 end
