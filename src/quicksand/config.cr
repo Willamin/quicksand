@@ -1,10 +1,10 @@
-macro arg(num, err_message, default)
+def arg(num, err_message, default)
   begin
-    ARGV[{{num}}]
+    ARGV[num]
   rescue e
-    raise {{err_message}}
+    raise err_message
   ensure
-    {{default}}
+    default
   end
 end
 
