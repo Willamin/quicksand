@@ -21,12 +21,12 @@ class String
   end
 end
 
-macro env(name, default)
-  %x = ENV[{{name}}]?
-  if %x.nil?
-    {{default}}
+def env(name : String, default)
+  x = ENV[name]?
+  if x.nil?
+    default
   else
-    %x
+    x
   end
 end
 
