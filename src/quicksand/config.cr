@@ -8,8 +8,26 @@ macro arg(num, err_message, default)
   end
 end
 
-macro env_int(name)
-  ENV[{{name}}]?.try(&.to_i?)
+class String
+  def to_b
+    case self.downcase
+    when "yes", "y", "1", "true"
+      true
+    when "no", "n", "0", "false"
+      false
+    else
+      raise "Invalid boolean conversion"
+    end
+  end
+end
+
+macro env(name, default)
+  %x = ENV[{{name}}]?
+  if %x.nil?
+    {{default}}
+  else
+    %x
+  end
 end
 
 struct Quicksand::Config
@@ -17,14 +35,16 @@ struct Quicksand::Config
   property host : String
   property port : Int32
   property max_downloads : Int32
+  property show_banner : Bool
 
   def initialize
     @filename = arg(0, "Must provide a filename", "")
 
     raise "#{filename} does not exist" unless File.exists?(filename.not_nil!)
 
-    @host = ENV["SANDHOST"]? || ENV["HOST"]? || "127.0.0.1"
-    @port = env_int("SANDPORT") || env_int("PORT") || 7000
-    @max_downloads = env_int("SAND_MAX") || 1
+    @host = env("HOST", "127.0.0.1")
+    @port = env("PORT", "7000").to_i
+    @max_downloads = env("SAND_MAX", "1").to_i
+    @show_banner = env("SAND_BANNER", "true").to_b
   end
 end

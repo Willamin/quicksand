@@ -20,6 +20,11 @@ server = HTTP::Server.new([
   Quicksand::SandHandler.new(c.filename, c.max_downloads),
 ])
 
+if c.show_banner
+  puts Quicksand::BANNER
+  puts
+end
+
 print "spinning up ngrok..."
 Ngrok.start({addr: "#{c.host}:#{c.port}"}) do |ngrok|
   puts "done"
