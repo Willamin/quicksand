@@ -16,22 +16,22 @@ end
 struct Quicksand::Config
   getter quiet : Bool
   getter verbose : Bool
-  getter debug : Bool
   getter filename : String
   getter host : String
   getter port : Int32
   getter max_downloads : Int32
   getter show_banner : Bool
+  getter daemonize : Bool
 
   def initialize
     quiet = false
     verbose = false
-    debug = false
     host = "127.0.0.1"
     port = 7000
     max_downloads = 1
     show_banner = true
     filename = ""
+    daemonize = false
 
     if ENV["HOST"]?
       host = ENV["HOST"]
@@ -53,11 +53,11 @@ struct Quicksand::Config
       parser.banner = "Usage: quicksand [arguments]"
       parser.on("-h HOST", "--host=HOST", "specify the host to use") { |h| host = h }
       parser.on("-p PORT", "--port=PORT", "specify the port to use") { |p| port = p.to_i }
-      parser.on("-m MAX", "--max=MAX", "specify the maximum number of downloads allowed") { |m| max_downloads = m.to_i }
+      parser.on("-m MAX", "--max=MAX", "specify the maximum number of downloads allowed (anything less than 0 is unlimited)") { |m| max_downloads = m.to_i }
+      parser.on("-d", "--daemon", "run as a daemon") { daemonize = true; quiet = true }
       parser.separator
       parser.on("-q", "--quiet", "suppress output (implies -B, but can be overridden with -b)") { quiet = true; show_banner = false }
       parser.on("-v", "--verbose", "outputs verbosely (disables -q)") { quiet = false; verbose = true }
-      parser.on("-D", "--debug", "outputs debug information (disables -q)") { quiet = false; debug = true }
       parser.on("-b", "--banner", "display the banner") { show_banner = true }
       parser.on("-B", "--no-banner", "hide the banner") { show_banner = false }
       parser.separator
@@ -79,11 +79,11 @@ struct Quicksand::Config
 
     @quiet = quiet
     @verbose = verbose
-    @debug = debug
     @filename = filename
     @host = host
     @port = port
     @max_downloads = max_downloads
     @show_banner = show_banner
+    @daemonize = daemonize
   end
 end

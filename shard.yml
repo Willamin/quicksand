@@ -21,3 +21,5 @@ development_dependencies:
 dependencies:
   ngrok:
     github: watzon/ngrok.cr
+  crouton:
+    github: willamin/crouton

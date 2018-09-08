@@ -1,9 +1,9 @@
 class Quicksand::Logger
   enum Level
+    AbsolutelySilent
     Forced
     Normal
     Verbose
-    Debug
   end
 
   property allowed : Level
@@ -13,7 +13,9 @@ class Quicksand::Logger
   # Normal output
 
   def force(thing)
-    STDOUT.print(thing)
+    if allowed >= Level::Forced
+      STDOUT.print(thing)
+    end
   end
 
   def print(thing)
@@ -28,16 +30,12 @@ class Quicksand::Logger
     end
   end
 
-  def debug(thing)
-    if allowed >= Level::Debug
-      STDOUT.print(thing)
-    end
-  end
-
   # New lines
 
   def force
-    STDOUT.puts
+    if allowed >= Level::Forced
+      STDOUT.puts
+    end
   end
 
   def puts
@@ -52,12 +50,6 @@ class Quicksand::Logger
     end
   end
 
-  def debug
-    if allowed >= Level::Debug
-      STDOUT.puts
-    end
-  end
-
   # Error output
 
   def err(thing = "")
@@ -67,7 +59,9 @@ class Quicksand::Logger
   end
 
   def force_err(thing = "")
-    STDERR.puts(thing)
+    if allowed >= Level::Forced
+      STDERR.puts(thing)
+    end
   end
 
   # Adjusters
@@ -80,8 +74,8 @@ class Quicksand::Logger
     @allowed = Level::Verbose
   end
 
-  def debug!
-    @allowed = Level::Debug
+  def daemonize!
+    @allowed = Level::AbsolutelySilent
   end
 
   # Promotion to top level
@@ -101,6 +95,10 @@ class Quicksand::Logger
 
     def puts
       {{logger}}.puts
+    end
+
+    def err(thing)
+      {{logger}}.err(thing)
     end
   end
 end

@@ -34,7 +34,7 @@ class Quicksand::SandHandler
 
       spawn do
         if we_should_die
-          STDERR.puts "Max downloads (#{download_count}/#{max_downloads}) reached"
+          err "Max downloads (#{download_count}/#{max_downloads}) reached"
           exit 1
         end
       end
