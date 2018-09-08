@@ -6,7 +6,7 @@ Testing is done manually until a sufficient test framework is found. All of the 
 
 ```
 $ quicksand --version
-quicksand v0.3.0
+quicksand vX.Y.Z
 
 
 $ quicksand --help
@@ -74,4 +74,13 @@ https://xxxxxxxx.ngrok.io/hello.txt
 #   - able to continue doing other things in the shell
 # also expect the app to close itself when the max download limit is reached
 
+
+# when disconnected from the internet, expect:
+$ quicksand hello.txt -B
+spinning up ngrok...........Unable to fetch external url
+
+
+# when disconnected from the internet, expect:
+$ sand hello.txt -d
+Unable to fetch external url
 ```
