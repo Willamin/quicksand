@@ -33,6 +33,13 @@ struct Quicksand::Config
     filename = ""
     daemonize = false
 
+    dev =
+      {% if flag?("release") %}
+      ""
+      {% else %}
+      "-dev"
+      {% end %}
+
     if ENV["HOST"]?
       host = ENV["HOST"]
     end
@@ -62,7 +69,7 @@ struct Quicksand::Config
       parser.on("-B", "--no-banner", "hide the banner") { show_banner = false }
       parser.separator
       parser.on("--help", "show this help") { puts parser; exit 0 }
-      parser.on("--version", "show the version") { puts "quicksand v#{Quicksand::VERSION}"; exit 0 }
+      parser.on("--version", "show the version") { puts "quicksand v#{Quicksand::VERSION}#{dev}"; exit 0 }
 
       parser.unknown_args do |args|
         unless args.empty?
