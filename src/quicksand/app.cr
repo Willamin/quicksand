@@ -44,5 +44,11 @@ class Quicksand::App
 
       server.listen
     end
+  rescue e
+    if pipe
+      pipe.puts("[bad]#{e.message}")
+    else
+      raise e
+    end
   end
 end

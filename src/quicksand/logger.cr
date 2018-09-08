@@ -100,5 +100,9 @@ class Quicksand::Logger
     def err(thing)
       {{logger}}.err(thing)
     end
+
+    def force_err(thing)
+      {{logger}}.force_err(thing)
+    end
   end
 end

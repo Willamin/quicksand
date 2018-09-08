@@ -21,8 +21,15 @@ begin
       LOGGER.daemonize!
       Quicksand::App.main(c, pipe)
     end
-    force(pipe.gets)
-    force
+    pipe.gets.try do |output|
+      if output.starts_with?("[bad]")
+        output = output.lstrip("[bad]")
+        force_err(output)
+      else
+        force(output)
+        force
+      end
+    end
     exit 0
   else
     Quicksand::App.main(c)
