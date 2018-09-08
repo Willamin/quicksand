@@ -1,12 +1,4 @@
-def arg(num, err_message, default)
-  begin
-    ARGV[num]
-  rescue e
-    raise err_message
-  ensure
-    default
-  end
-end
+require "option_parser"
 
 class String
   def to_b
@@ -21,15 +13,6 @@ class String
   end
 end
 
-def env(name : String, default)
-  x = ENV[name]?
-  if x.nil?
-    default
-  else
-    x
-  end
-end
-
 struct Quicksand::Config
   property filename : String
   property host : String
@@ -38,13 +21,54 @@ struct Quicksand::Config
   property show_banner : Bool
 
   def initialize
-    @filename = arg(0, "Must provide a filename", "")
+    @host = "127.0.0.1"
+    @port = 7000
+    @max_downloads = 1
+    @show_banner = true
+    @filename = ""
 
-    raise "#{filename} does not exist" unless File.exists?(filename.not_nil!)
+    if ENV["HOST"]?
+      @host = ENV["HOST"]
+    end
 
-    @host = env("HOST", "127.0.0.1")
-    @port = env("PORT", "7000").to_i
-    @max_downloads = env("SAND_MAX", "1").to_i
-    @show_banner = env("SAND_BANNER", "true").to_b
+    if ENV["PORT"]?.try(&.to_i?)
+      @port = ENV["PORT"].to_i
+    end
+
+    if ENV["SAND_MAX"]?.try(&.to_i?)
+      @max_downloads = ENV["SAND_MAX"].to_i
+    end
+
+    begin
+      if ENV["SAND_BANNER"]?.try(&.to_b)
+        @show_banner = ENV["SAND_BANNER"].to_b
+      end
+    rescue e
+    end
+
+    OptionParser.parse! do |parser|
+      parser.banner = "Usage: quicksand [arguments]"
+      parser.on("-h HOST", "--host=HOST", "specify the host to use") { |h| @host = h }
+      parser.on("-p PORT", "--port=PORT", "specify the port to use") { |p| @port = p.to_i }
+      parser.on("-m MAX", "--max=MAX", "specify the maximum number of downloads allowed") { |m| @max_downloads = m.to_i }
+      parser.separator
+      parser.on("-b", "--banner", "display the banner") { @show_banner = true }
+      parser.on("-B", "--no-banner", "hide the banner") { @show_banner = false }
+      parser.separator
+      parser.on("--help", "show this help") { puts parser; exit 0 }
+      parser.on("--version", "show the version") { puts "quicksand v#{Quicksand::VERSION}"; exit 0 }
+
+      parser.unknown_args do |args|
+        unless args.empty?
+          @filename = args.first
+        end
+      end
+    end
+
+    if @filename.empty?
+      raise "Must provide a filename"
+    end
+
+    raise "#{filename} does not exist" unless File.exists?(@filename)
   end
 end
