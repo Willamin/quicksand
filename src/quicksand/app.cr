@@ -37,10 +37,23 @@ class Quicksand::App
       print "#{ngrok.ngrok_url}/#{c.filename}"
       puts
 
-      print "remote https : "
-      force "#{ngrok.ngrok_url_https}/#{c.filename}"
-      force
-      puts
+      ngrok.ngrok_url_https.try do |https_url|
+        print "remote https : "
+        print "#{https_url}/#{c.filename}"
+        puts
+        puts
+
+        URI.parse(https_url).try do |uri|
+          uri.host.try do |host|
+            ngrok_subdomain = host.split(".")[-3]
+
+            print "labeled      : "
+            force "https://sand.wfl.space/#{ngrok_subdomain}"
+            force
+            puts
+          end
+        end
+      end
 
       server.listen
     end

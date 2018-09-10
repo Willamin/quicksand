@@ -1,3 +1,4 @@
+require "uri"
 require "http/server"
 require "ngrok"
 require "./quicksand/*"
