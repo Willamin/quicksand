@@ -8,9 +8,14 @@ I symlink the `quicksand` binary to someplace in my `PATH` as `sand`. In this do
 
 ```sh-session
 $ sand hello.txt
-starting...
-listening at http://127.0.0.1:7000
-http: http://xxxxxxxx.ngrok.io
+spinning up ngrok...........done
+spinning up static server...done
+limiting to 1 downloads
+local        : http://127.0.0.1:7000/hello.txt
+remote http  : http://xxxxxxxx.ngrok.io/hello.txt
+remote https : https://xxxxxxxx.ngrok.io/hello.txt
+
+labeled      : https://sand.wfl.space/xxxxxxxx
 ```
 
 By default, only 1 download is allowed, as the primary purpose of this program is to send 1 file 1 time. A command line option is provided to change this.
