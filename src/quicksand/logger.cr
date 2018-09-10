@@ -7,8 +7,9 @@ class Quicksand::Logger
   end
 
   property allowed : Level
+  property debug : Bool
 
-  def initialize(@allowed = Level::Normal); end
+  def initialize(@allowed = Level::Normal, @debug = false); end
 
   # Normal output
 
