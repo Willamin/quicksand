@@ -1,5 +1,7 @@
 # quicksand
 
+![terminal window with quicksand being used](screenshot.png)
+
 ## Usage
 
 I symlink the `quicksand` binary to someplace in my `PATH` as `sand`. In this document, any time I use the command `sand`, that is what I'll be referring to.
