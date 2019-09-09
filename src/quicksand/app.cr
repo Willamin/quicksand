@@ -17,8 +17,8 @@ class Quicksand::App
       print("done")
       puts
 
-      if pipe
-        pipe.puts "#{ngrok.ngrok_url_https}/#{c.filename}"
+      if pipe && (https_url = ngrok.ngrok_url_https)
+        pipe.puts File.join(https_url, c.filename)
       end
 
       print("spinning up static server...")
@@ -30,16 +30,18 @@ class Quicksand::App
       puts
 
       print "local        : "
-      print "http://#{c.host}:#{c.port}/#{c.filename}"
+      print File.join("http://#{c.host}:#{c.port}/", c.filename)
       puts
 
-      print "remote http  : "
-      print "#{ngrok.ngrok_url}/#{c.filename}"
-      puts
+      if (ngrok_url = ngrok.ngrok_url)
+        print "remote http  : "
+        print File.join(ngrok_url, c.filename)
+        puts
+      end
 
       ngrok.ngrok_url_https.try do |https_url|
         print "remote https : "
-        print "#{https_url}/#{c.filename}"
+        print File.join(https_url, c.filename)
         puts
         puts
 

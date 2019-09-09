@@ -8,7 +8,7 @@ targets:
   quicksand:
     main: src/quicksand.cr
 
-crystal: 0.26.1
+crystal: 0.30.1
 
 license: MIT
 

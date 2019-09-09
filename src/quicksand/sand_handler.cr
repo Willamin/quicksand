@@ -23,8 +23,8 @@ class Quicksand::SandHandler
     when "/"
       context.response.status_code = 302
       context.response.headers["Location"] = "/" + file_path
-    when "/" + file_path
-      context.response.headers["Etag"] = %{W/"#{mod_time.epoch}"} if mod_time
+    when file_path
+      context.response.headers["Etag"] = %{W/"#{mod_time.to_unix}"} if mod_time
       context.response.headers["Last-Modified"] = HTTP.format_time(mod_time)
       context.response.content_length = file_size
       File.open(file_path) do |file|
