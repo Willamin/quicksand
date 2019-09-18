@@ -10,5 +10,5 @@ shards:
 
   ngrok:
     github: watzon/ngrok.cr
-    commit: 3627a6788644313d0138e08dddb54413f97588e1
+    version: 0.2.0
 
